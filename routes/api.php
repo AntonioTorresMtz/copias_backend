@@ -32,3 +32,5 @@ Route::middleware('auth:sanctum')->get('/ventas', [VentasController::class, 'ind
 Route::middleware('auth:sanctum')->post('/ventas/InsertarDetalleVenta/{id}', [VentasController::class, 'insertarDetalleVenta']);
 Route::middleware('auth:sanctum')->patch('/ventas/cancelarVenta', [VentasController::class, 'cancelarVenta']);
 Route::middleware('auth:sanctum')->get('/ventas/obtenerDetalleVentas/{id}', [VentasController::class, 'obtenerDetalleVentas']);
+Route::middleware('auth:sanctum')->get('/ventas/obtenerVentas', [VentasController::class, 'obtenerVentas']);
+Route::middleware('auth:sanctum')->post('/ventas/obtenerVentasFiltrado', [VentasController::class, 'obtenerVentasFiltrado']);

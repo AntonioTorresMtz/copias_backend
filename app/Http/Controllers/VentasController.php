@@ -23,6 +23,56 @@ class VentasController extends Controller
             'data' => $ventas
         ], 200);
     }
+
+    public function obtenerVentas()
+    {
+        $ventas = DB::table('tbl_copias_ventas')
+            ->select(
+                'PK_venta',
+                'total',
+                'usuario_crear',
+                'estado',
+                'fecha'                
+            )
+            ->whereRaw('DATE(fecha) = CURDATE()') 
+            -> orderBy('fecha', 'DESC')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Consulta exitosa',
+            'codigo' => 200,
+            'data' => $ventas
+        ], 200);
+
+    }
+
+        public function obtenerVentasFiltrado(Request $request)
+    {
+        $fecha_inicio = $request['fecha_inicio'];
+        $fecha_fin = $request['fecha_fin'];
+
+        $ventas = DB::table('tbl_copias_ventas')
+            ->select(
+                'PK_venta',
+                'total',
+                'usuario_crear',
+                'estado',
+                'fecha'                
+            )
+            ->whereBetween('fecha', [$fecha_inicio, $fecha_fin])
+            -> orderBy('fecha', 'DESC')
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Consulta exitosa',
+            'codigo' => 200,
+            'data' => $ventas
+        ], 200);
+
+    }
+
     public function insertarDetalleVenta(Request $request, $id)
     {
         //Guardar gastos de color y hoja
@@ -146,7 +196,9 @@ class VentasController extends Controller
                 'c.cantidad',
                 'c.desperdicio',
                 'c.caras',
-                'c.fecha'
+                'c.fecha',
+                'v.PK_venta',
+                'v.fecha'
             )
             ->get();
 
